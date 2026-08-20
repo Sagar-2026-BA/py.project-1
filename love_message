@@ -1,0 +1,10 @@
+import time
+import sys
+
+message = "💖 You are loved 💖"
+for char in message:
+    sys.stdout.write(char)
+    sys.stdout.flush()
+    time.sleep(0.1)
+
+
