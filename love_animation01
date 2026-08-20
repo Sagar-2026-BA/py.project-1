@@ -1,0 +1,126 @@
+import turtle
+import math
+import random
+import time
+
+# --------------------------------
+# SETUP
+# --------------------------------
+
+screen = turtle.Screen()
+screen.bgcolor("black")
+screen.title("Love Animation")
+screen.setup(width=900, height=700)
+screen.tracer(0)
+
+# One turtle for drawing all particles
+drawer = turtle.Turtle()
+drawer.hideturtle()
+drawer.penup()
+
+
+# --------------------------------
+# PARTICLE CLASS
+# --------------------------------
+
+class VortexParticle:
+
+    def __init__(self, angle):
+        self.angle = angle
+
+        # Start somewhere random
+        self.x = random.uniform(-400, 400)
+        self.y = random.uniform(-300, 300)
+
+        self.vx = random.uniform(-1, 1)
+        self.vy = random.uniform(-1, 1)
+
+    def update(self, t):
+
+        # Pulsing heart size
+        scale = 14 + 2 * math.sin(t * 3)
+
+        # HEART EQUATION
+        target_x = (
+            16 * math.sin(self.angle) ** 3
+        ) * scale
+
+        target_y = (
+            13 * math.cos(self.angle)
+            - 5 * math.cos(2 * self.angle)
+            - 2 * math.cos(3 * self.angle)
+            - math.cos(4 * self.angle)
+        ) * scale
+
+        # Distance to target
+        dx = target_x - self.x
+        dy = target_y - self.y
+
+        # Pull particle toward heart
+        self.vx += dx * 0.015
+        self.vy += dy * 0.015
+
+        # Damping so particles don't fly away
+        self.vx *= 0.85
+        self.vy *= 0.85
+
+        # Move
+        self.x += self.vx
+        self.y += self.vy
+
+
+# --------------------------------
+# CREATE PARTICLES
+# --------------------------------
+
+particles = []
+
+NUMBER_OF_PARTICLES = 300
+
+for i in range(NUMBER_OF_PARTICLES):
+
+    # Evenly distribute particles around heart
+    angle = (2 * math.pi * i) / NUMBER_OF_PARTICLES
+
+    particle = VortexParticle(angle)
+
+    particles.append(particle)
+
+
+# --------------------------------
+# ANIMATION
+# --------------------------------
+
+start_time = time.time()
+
+while True:
+
+    t = time.time() - start_time
+
+    # Clear previous frame
+    drawer.clear()
+
+    # Draw every particle
+    for particle in particles:
+
+        particle.update(t)
+
+        drawer.goto(particle.x, particle.y)
+
+        # Pink/red shades
+        r = 1.0
+        g = random.uniform(0.05, 0.35)
+        b = random.uniform(0.15, 0.5)
+
+        drawer.color(r, g, b)
+
+        drawer.dot(random.randint(2, 5))
+
+    # Show frame
+    screen.update()
+
+    # Control animation speed
+    time.sleep(0.02)
+
+
+turtle.done()
