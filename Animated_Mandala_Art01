@@ -1,0 +1,25 @@
+import turtle
+
+s = turtle.Screen()
+s.bgcolor("#111111")
+s.title("Animated Mandala")
+
+t = turtle.Turtle()
+t.speed(0)
+t.hideturtle()
+t.width(2)
+
+colors = ["#4c1d95", "#6d28d9", "#8b5cf6", "#c084fc", "#e879f9", "#f43f5e", "#ff007f"]
+
+for idx, r in enumerate(range(40, 250, 30)):
+    t.pencolor(colors[idx % len(colors)])
+    for i in range(12):
+        t.penup()
+        t.goto(0, 0)
+        t.setheading(i * 30)
+        t.pendown()
+        t.circle(r, 60)
+        t.left(120)
+        t.circle(r, 60)
+
+turtle.done()
