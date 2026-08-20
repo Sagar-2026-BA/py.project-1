@@ -1,0 +1,27 @@
+import turtle as t
+import colorsys as c
+
+s = t.Screen()
+s.bgcolor("black")
+s.tracer(1)
+
+pen = t.Turtle()
+pen.hideturtle()
+pen.speed(0)
+pen.width(1)
+
+num_loops = 200
+
+for i in range(num_loops):
+    r, g, b = c.hsv_to_rgb(i / num_loops, 0.8, 1.0)
+    pen.pencolor(r, g, b)
+    pen.penup()
+    pen.goto(0, 0)
+    pen.setheading(i * 3.6)
+    pen.forward(70)
+    pen.pendown()
+    pen.circle(90, 190)
+    pen.left(98)
+    pen.circle(40, 245)
+
+t.done()
